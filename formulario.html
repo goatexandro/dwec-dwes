@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h1>Formulario</h1>
+    <fieldset>
+        <form action="ws/createElement2.php" method="post">
+            <p>Nombre del elemento:</p>
+            <input type="text" name="nombre" >
+
+            <p>Descripción del elemento:</p>
+            <textarea name="descripcion" ></textarea>
+
+            <p>Número de serie del elemento:</p>
+            <input type="text" name="nserie" >
+
+            <p>Estado:</p>
+            <input type="radio" name="estado" value="activo" >
+            <label>Activo</label>
+            <input type="radio" name="estado" value="inactivo">
+            <label>Inactivo</label>
+
+            <p>Prioridad:</p>
+            <input type="radio" name="prioridad" value="Alta" >
+            <label>Alta</label>
+            <input type="radio" name="prioridad" value="Media">
+            <label>Media</label>
+            <input type="radio" name="prioridad" value="Baja">
+            <label>Baja</label>
+
+            <br><br>
+            <button type="submit">Enviar</button>
+        </form>
+    </fieldset>
+
+    <h2>Enlaces</h2>
+    <ul>
+        <li><a href="Formulario.html">Formulario</a></li>
+        <li><a href="Tabla.html">Tabla</a></li>
+        <li><a href="Listas.html">Lista</a></li>
+        <li><a href="Resumen.html">Resumen</a></li>
+    </ul>
+</body>
+</html>
