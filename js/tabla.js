@@ -16,12 +16,12 @@ window.onload = () => {
             tabla(elementos);
         }
     });
+
     const busqueda = (iniciodepalabra) => {
         const elementosFiltrados = elementos.filter(elemento => 
             elemento.nombre.toLowerCase().includes(iniciodepalabra) ||
             elemento.descripcion.toLowerCase().includes(iniciodepalabra)
         );
-    
         tabla(elementosFiltrados);
     }
 };
@@ -56,11 +56,18 @@ const tabla = (tabla) => {
         prioridad.textContent = elemento.prioridad;
 
         const acciones = document.createElement("td");
+
         const botonx = document.createElement("button");
         botonx.textContent = "X";
         botonx.classList.add("eliminar");
         botonx.setAttribute("data-index", i); 
         acciones.appendChild(botonx);
+
+        const botonEditar = document.createElement("button");
+        botonEditar.textContent = "Editar";
+        botonEditar.classList.add("editar");
+        botonEditar.setAttribute("data-index", i); 
+        acciones.appendChild(botonEditar);
 
         fila.appendChild(nombre);
         fila.appendChild(descripcion);
@@ -74,15 +81,73 @@ const tabla = (tabla) => {
 
     const botonesquitar = document.querySelectorAll(".eliminar");
     for (let i = 0; i < botonesquitar.length; i++) {
-        botonesquitar[i].onclick = () => {
+        botonesquitar[i].addEventListener("click", () => {
             const filaIndex = botonesquitar[i].getAttribute("data-index");
             quitar(filaIndex);
-        };
+        });
     }
-}
+
+    const botonesEditar = document.querySelectorAll(".editar");
+    for (let i = 0; i < botonesEditar.length; i++) {
+        botonesEditar[i].addEventListener("click", () => {
+            const filaIndex = botonesEditar[i].getAttribute("data-index");
+            editar(filaIndex);
+        });
+    }
+};
 
 const quitar = (filaIndex) => {
-    const tbody = document.querySelector("#elemento tbody");
-    tbody.deleteRow(filaIndex);
+    elementos.splice(filaIndex, 1); 
+    tabla(elementos); 
 }
 
+const editar = (filaIndex) => {
+    const elemento = elementos[filaIndex];
+
+    document.getElementById("nombre").value = elemento.nombre;
+    document.getElementById("descripcion").value = elemento.descripcion;
+    document.getElementById("numeroSerie").value = elemento.numeroSerie;
+
+    const estadoRadios = document.getElementsByName("estado");
+    estadoRadios.forEach(radio => {
+        if (radio.value === elemento.estado) {
+            radio.checked = true;
+        }
+    });
+
+    const prioridadRadios = document.getElementsByName("prioridad");
+    prioridadRadios.forEach(radio => {
+        if (radio.value === elemento.prioridad) {
+            radio.checked = true;
+        }
+    });
+
+    document.getElementById("formulario").style.display = "block";
+    document.getElementById("indexElemento").value = filaIndex;
+
+    document.getElementById("edit").onsubmit = function(event) {
+        event.preventDefault();
+        guardar(filaIndex);
+    };
+
+
+    document.getElementById("cancelarBtn").onclick = cancelar;
+};
+
+const guardar = (filaIndex) => {
+    const nombre = document.getElementById("nombre").value;
+    const descripcion = document.getElementById("descripcion").value;
+    const numeroSerie = document.getElementById("numeroSerie").value;
+    const estado = document.querySelector('input[name="estado"]:checked').value;
+    const prioridad = document.querySelector('input[name="prioridad"]:checked').value;
+
+    elementos[filaIndex] = { nombre, descripcion, numeroSerie, estado, prioridad };
+
+    tabla(elementos);
+
+    document.getElementById("formulario").style.display = "none";
+};
+
+const cancelar = () => {
+    document.getElementById("formulario").style.display = "none";
+};

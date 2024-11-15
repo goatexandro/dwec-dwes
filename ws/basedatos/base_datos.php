@@ -29,7 +29,7 @@ class Database
     }
 }
 
-class ElementManager
+class Configuration
 {
     private $connection;
 
@@ -42,66 +42,65 @@ class ElementManager
     public function getElementById($id)
     {
         try {
-            $stmt = $this->connection->prepare("SELECT * FROM elementos WHERE id = :id");
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $result ? ['success' => true, 'message' => 'Elemento encontrado', 'data' => $result] : ['success' => false, 'message' => 'Elemento no encontrado', 'data' => null];
+            $query = $this->connection->prepare("SELECT * FROM elementos WHERE id = :id");
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
+            $query->execute();
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            return $result ? ['success' => true, 'message' => 'Elemento encontrado', 'data' => $result] : ['success' => false, 'message' => 'Elemento no encontrado'];
         } catch (Exception $e) {
-            return ['success' => false, 'message' => 'Error: ' . $e->getMessage(), 'data' => null];
+            return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
         }
     }
 
     public function getAllElements()
     {
         try {
-            $stmt = $this->connection->query("SELECT * FROM elementos");
-            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $query = $this->connection->query("SELECT * FROM elementos");
+            $results = $query->fetchAll(PDO::FETCH_ASSOC);
             return ['success' => true, 'message' => 'Elementos recuperados', 'data' => $results];
         } catch (Exception $e) {
-            return ['success' => false, 'message' => 'Error al obtener elementos: ' . $e->getMessage(), 'data' => null];
+            return ['success' => false, 'message' => 'Error al obtener elementos: ' . $e->getMessage()];
         }
     }
 
     public function deleteElementById($id)
     {
         try {
-            $stmt = $this->connection->prepare("SELECT * FROM elementos WHERE id = :id");
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $query = $this->connection->prepare("SELECT * FROM elementos WHERE id = :id");
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
+            $query->execute();
 
-            if (!$result) {
-                return ['success' => false, 'message' => 'Elemento no encontrado', 'data' => null];
+            if (!$query) {
+                return ['success' => false, 'message' => 'Elemento no encontrado'];
             }
 
-            $stmt = $this->connection->prepare("DELETE FROM elementos WHERE id = :id");
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
+            $query = $this->connection->prepare("DELETE FROM elementos WHERE id = :id");
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
+            $query->execute();
 
-            return ['success' => true, 'message' => 'Elemento eliminado', 'data' => $result];
+            return ['success' => true, 'message' => 'Elemento eliminado', 'data' => $query];
         } catch (Exception $e) {
-            return ['success' => false, 'message' => 'Error: ' . $e->getMessage(), 'data' => null];
+            return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
         }
     }
 
     public function createElement($nombre, $descripcion, $nserie, $estado, $prioridad) {
         try {
-            $stmt = $this->connection->prepare(
+            $query = $this->connection->prepare(
                 "INSERT INTO elementos (nombre, descripcion, nserie, estado, prioridad)
                  VALUES (:nombre, :descripcion, :nserie, :estado, :prioridad)"
             );
-            $stmt->bindParam(':nombre', $nombre);
-            $stmt->bindParam(':descripcion', $descripcion);
-            $stmt->bindParam(':nserie', $nserie);
-            $stmt->bindParam(':estado', $estado);
-            $stmt->bindParam(':prioridad', $prioridad);
-    
-            $stmt->execute();
-    
+            $query->bindParam(':nombre', $nombre);
+            $query->bindParam(':descripcion', $descripcion);
+            $query->bindParam(':nserie', $nserie);
+            $query->bindParam(':estado', $estado);
+            $query->bindParam(':prioridad', $prioridad);
+
+            $query->execute();
+
             $id = $this->connection->lastInsertId();
-    
-            return $this->getElementById($id);
+
+            return ['success' => true, 'message' => 'Elemento creado con éxito'];
         } catch (Exception $e) {
             return ['success' => false, 'message' => 'Error al crear elemento: ' . $e->getMessage()];
         }
@@ -118,20 +117,20 @@ class ElementManager
             if ($prioridad) $array[] = "prioridad = :prioridad";
 
             if (empty($array)) {
-                return ['success' => false, 'message' => 'No se proporcionaron datos para actualizar', 'data' => null];
+                return ['success' => false, 'message' => 'No se proporcionaron datos para actualizar'];
             }
 
             $sql = "UPDATE elementos SET " . implode(", ", $array) . " WHERE id = :id";
-            $stmt = $this->connection->prepare($sql);
+            $query = $this->connection->prepare($sql);
 
-            if ($nombre) $stmt->bindParam(':nombre', $nombre);
-            if ($descripcion) $stmt->bindParam(':descripcion', $descripcion);
-            if ($nserie) $stmt->bindParam(':nserie', $nserie);
-            if ($estado) $stmt->bindParam(':estado', $estado);
-            if ($prioridad) $stmt->bindParam(':prioridad', $prioridad);
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            if ($nombre) $query->bindParam(':nombre', $nombre);
+            if ($descripcion) $query->bindParam(':descripcion', $descripcion);
+            if ($nserie) $query->bindParam(':nserie', $nserie);
+            if ($estado) $query->bindParam(':estado', $estado);
+            if ($prioridad) $query->bindParam(':prioridad', $prioridad);
+            $query->bindParam(':id', $id, PDO::PARAM_INT);
 
-            $stmt->execute();
+            $query->execute();
 
             return ['success' => true, 'message' => 'Elemento actualizado con éxito'];
 
@@ -141,17 +140,16 @@ class ElementManager
     }
 }
 
-$elementManager = new ElementManager();
+$configuration = new Configuration();
 
 $id = $_GET['id'] ?? null;
 
 if ($id) {
-    $response = $elementManager->getElementById($id);
+    $response = $configuration->getElementById($id);
 } else {
-    $response = $elementManager->getAllElements();
+    $response = $configuration->getAllElements();
 }
 
 header('Content-Type: application/json');
 echo json_encode($response);
-
 ?>

@@ -4,7 +4,7 @@ require_once 'interfaces/IToJson.php';
 require_once 'models/Element.php'; 
 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     $nombre = $_POST['nombre'] ?? '';
     $descripcion = $_POST['descripcion'] ?? '';
     $numero_de_serie = $_POST['numero_de_serie'] ?? '';
@@ -16,5 +16,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     file_put_contents('Datos del formulario.txt', $elemento->toJson() . PHP_EOL, FILE_APPEND);
 
     echo $elemento->toJson();
-}
+
 ?>

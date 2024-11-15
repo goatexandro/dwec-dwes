@@ -11,3 +11,9 @@
 {"nombre": "manuel", "descripcion": "deedd", "numero_de_serie": "43", "estado": "on", "prioridad": "Media"}
 {"nombre": "cd", "descripcion": "dfdf", "numero_de_serie": "", "estado": "activo", "prioridad": "Media"}
 {"nombre": "wqe", "descripcion": "weqq", "numero_de_serie": "", "estado": "activo", "prioridad": "Media"}
+{"nombre": "", "descripcion": "", "numero_de_serie": "", "estado": "", "prioridad": ""}
+{"nombre": "", "descripcion": "", "numero_de_serie": "", "estado": "", "prioridad": ""}
+{"nombre": "", "descripcion": "", "numero_de_serie": "", "estado": "", "prioridad": ""}
+{"nombre": "", "descripcion": "", "numero_de_serie": "", "estado": "", "prioridad": ""}
+{"nombre": "", "descripcion": "", "numero_de_serie": "", "estado": "", "prioridad": ""}
+{"nombre": "", "descripcion": "", "numero_de_serie": "", "estado": "", "prioridad": ""}

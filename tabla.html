@@ -5,58 +5,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabla</title>
+    <script src="./js/nav.js" defer></script>
     <script src="./js/tabla.js" defer></script>
 </head>
 
 <body>
-    <h1>Datos</h1>
 
-    <input type="text" id="filtro">
-    <table border id="elemento">
+<header>
+    <div id="navbar"></div>
+</header>
+<fieldset>
 
+<h1>Datos</h1>
+
+<input type="text" id="filtro">
+<table border id="elemento">
+    <thead>
         <tr>
             <th>Nombre del Elemento</th>
             <th>Descripción del Elemento</th>
             <th>Número de Serie</th>
             <th>Estado</th>
             <th>Prioridad</th>
+            <th>Acciones</th>
         </tr>
+    </thead>
+</table>
 
-        <tr>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            <td><input type="text"></td>
-            
-            <td>
-                <input type="checkbox" name="estado">
-                <label>Activo</label>
-                <input type="checkbox" name="estado">
-                <label>Inactivo</label>
-            </td>
+<div id="formulario" style="display:none;">
+    <h2>Editar Elemento</h2>
+    <form id="edit">
+        <input type="hidden" id="indexElemento">
 
-            <td>
-                <input type="radio" name="prioridad">
-                <label>Alta</label>
-                <input type="radio" name="prioridad">
-                <label>Media</label>
-                <input type="radio" name="prioridad">
-                <label>Baja</label>
+        <label>Nombre:</label>
+        <input type="text" id="nombre" required><br><br>
 
-            </td>
-        </tr>
+        <label>Descripción:</label>
+        <input type="text" id="descripcion" required><br><br>
 
-    </table>
+        <label>Número de Serie:</label>
+        <input type="text" id="numeroSerie" required><br><br>
 
-    <h2>Enlaces</h2>
+        <label>Estado:</label>
+        <input type="radio" name="estado" value="Activo" required> Activo
+        <input type="radio" name="estado" value="Inactivo" required> Inactivo<br><br>
 
-    <ul>
-        <li><a href="Formulario.html">Formulario</a></li>
-        <li><a href="Tabla.html">Tabla</a></li>
-        <li><a href="Listas.html">Lista</a></li>
-        <li><a href="Resumen.html">Resumen</a></li>
+        <label>Prioridad:</label>
+        <input type="radio" name="prioridad" value="Alta" required> Alta
+        <input type="radio" name="prioridad" value="Media" required> Media
+        <input type="radio" name="prioridad" value="Baja" required> Baja<br><br>
 
-
-    </ul>
+        <button type="submit">Guardar</button>
+        <button type="button" id="cancelarBtn">No guardar</button>
+    </form>
+</div>
+    </fieldset>
 </body>
-
 </html>
