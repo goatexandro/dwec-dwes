@@ -108,17 +108,17 @@ const editar = (filaIndex) => {
     document.getElementById("descripcion").value = elemento.descripcion;
     document.getElementById("numeroSerie").value = elemento.numeroSerie;
 
-    const estadoRadios = document.getElementsByName("estado");
-    estadoRadios.forEach(radio => {
-        if (radio.value === elemento.estado) {
-            radio.checked = true;
+    const estados = document.getElementsByName("estado");
+    estados.forEach(c => {
+        if (c.value === elemento.estado) {
+            c.checked = true;
         }
     });
 
-    const prioridadRadios = document.getElementsByName("prioridad");
-    prioridadRadios.forEach(radio => {
-        if (radio.value === elemento.prioridad) {
-            radio.checked = true;
+    const prioridads = document.getElementsByName("prioridad");
+    prioridads.forEach(c => {
+        if (c.value === elemento.prioridad) {
+            c.checked = true;
         }
     });
 
