@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabla</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./js/nav.js" defer></script>
     <script src="./js/tabla.js" defer></script>
 </head>
@@ -18,7 +19,7 @@
 
 <h1>Datos</h1>
 
-<input type="text" id="filtro">
+<input type="text" id="filtro" placeholder="Buscar elementos...">
 <table border id="elemento">
     <thead>
         <tr>
@@ -30,6 +31,9 @@
             <th>Acciones</th>
         </tr>
     </thead>
+    <tbody id="tablaBody">
+       
+    </tbody>
 </table>
 
 <div id="formulario" style="display:none;">
@@ -59,6 +63,7 @@
         <button type="button" id="cancelarBtn">No guardar</button>
     </form>
 </div>
-    </fieldset>
+
+</fieldset>
 </body>
 </html>

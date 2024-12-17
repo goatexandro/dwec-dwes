@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <script src="./js/nav.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+    <script src="./js/tabla.js" defer></script>
+
 </head>
 <body>
 
     <header>
         <div id="navbar"></div>
-    
     </header>
 
     <fieldset>
         <h1>Formulario</h1>
 
-        <form action="ws/createElement2.php" method="post">
+        <form action="ws/createElement2.php" method="post" id="formulario">
             <p>Nombre del elemento:</p>
             <input type="text" name="nombre" >
 
@@ -45,6 +46,5 @@
         </form>
     </fieldset>
 
-   
 </body>
 </html>

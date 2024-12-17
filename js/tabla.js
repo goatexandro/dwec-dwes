@@ -1,153 +1,217 @@
-const elementos = [
-    { nombre: "fluor", descripcion: "Es muy peligroso", numeroSerie: "43253", estado: "Activo", prioridad: "Alta" },
-    { nombre: "XCSA", descripcion: "Se utiliza para las rataso", numeroSerie: "55555", estado: "Inactivo", prioridad: "Media" },
-    { nombre: "MANJA", descripcion: "Es la mezcla de 5 elementos distintos", numeroSerie: "77777", estado: "Activo", prioridad: "Baja" }
-];
+let elementos = [];
 
-window.onload = () => {
-    tabla(elementos);
+window.onload = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost/dwec-dwes/Trabajo/ws/getElement.php"
+    );
+    const result = await response.json();
 
-    const input = document.getElementById("filtro");
-    input.addEventListener("input", () => {
-        const cantidad = input.value.trim().toLowerCase();
-        if (cantidad.length >= 3) {
-            busqueda(cantidad);
-        } else {
-            tabla(elementos);
-        }
-    });
-
-    const busqueda = (iniciodepalabra) => {
-        const elementosFiltrados = elementos.filter(elemento => 
-            elemento.nombre.toLowerCase().includes(iniciodepalabra) ||
-            elemento.descripcion.toLowerCase().includes(iniciodepalabra)
-        );
-        tabla(elementosFiltrados);
-    }
-};
-
-const tabla = (tabla) => {
-    const tablainfo = document.getElementById("elemento").getElementsByTagName("tbody")[0];
-
-    if (!tablainfo) {
-        const nuevoCuerpo = document.createElement("tbody");
-        document.getElementById("elemento").appendChild(nuevoCuerpo);
+    if (result.success) {
+      elementos = result.data;
+      tabla(elementos);
     } else {
-        tablainfo.innerHTML = "";
+      Swal.fire("Error", "No se pudieron cargar los elementos.", "error");
     }
-
-    for (let i = 0; i < tabla.length; i++) {
-        const elemento = tabla[i];
-        const fila = document.createElement("tr");
-
-        const nombre = document.createElement("td");
-        nombre.textContent = elemento.nombre;
-
-        const descripcion = document.createElement("td");
-        descripcion.textContent = elemento.descripcion;
-
-        const numeroSerie = document.createElement("td");
-        numeroSerie.textContent = elemento.numeroSerie;
-
-        const estado = document.createElement("td");
-        estado.textContent = elemento.estado;
-
-        const prioridad = document.createElement("td");
-        prioridad.textContent = elemento.prioridad;
-
-        const acciones = document.createElement("td");
-
-        const botonx = document.createElement("button");
-        botonx.textContent = "X";
-        botonx.classList.add("eliminar");
-        botonx.setAttribute("data-index", i); 
-        acciones.appendChild(botonx);
-
-        const botonEditar = document.createElement("button");
-        botonEditar.textContent = "Editar";
-        botonEditar.classList.add("editar");
-        botonEditar.setAttribute("data-index", i); 
-        acciones.appendChild(botonEditar);
-
-        fila.appendChild(nombre);
-        fila.appendChild(descripcion);
-        fila.appendChild(numeroSerie);
-        fila.appendChild(estado);
-        fila.appendChild(prioridad);
-        fila.appendChild(acciones);
-
-        document.querySelector("#elemento tbody").appendChild(fila);
-    }
-
-    const botonesquitar = document.querySelectorAll(".eliminar");
-    for (let i = 0; i < botonesquitar.length; i++) {
-        botonesquitar[i].addEventListener("click", () => {
-            const filaIndex = botonesquitar[i].getAttribute("data-index");
-            quitar(filaIndex);
-        });
-    }
-
-    const botonesEditar = document.querySelectorAll(".editar");
-    for (let i = 0; i < botonesEditar.length; i++) {
-        botonesEditar[i].addEventListener("click", () => {
-            const filaIndex = botonesEditar[i].getAttribute("data-index");
-            editar(filaIndex);
-        });
-    }
+  } catch (error) {
+    Swal.fire("Error", "Hubo un problema con la conexión.", "error");
+  }
 };
 
-const quitar = (filaIndex) => {
-    elementos.splice(filaIndex, 1); 
-    tabla(elementos); 
-}
+const formulario = document.getElementById("formulario");
 
+formulario.addEventListener("submit", async function (event) {
+  event.preventDefault();
+
+  const formData = new FormData(event.target);
+
+  try {
+    const confirm = await Swal.fire({
+      title: "¿Estás seguro?",
+      text: "¿Deseas crear este elemento?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Sí, enviar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (confirm.isConfirmed) {
+      const response = await fetch("ws/createElement2.php", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        Swal.fire("¡Éxito!", result.message, "success");
+        formulario.reset();
+      } else {
+        Swal.fire("Error", result.message, "error");
+      }
+    }
+  } catch (error) {
+    Swal.fire("Error", "Hubo un problema con la solicitud", "error");
+  }
+});
+
+const tabla = (elementos) => {
+  const tableBody = document.getElementById("tablaBody");
+  tableBody.innerHTML = "";
+
+  elementos.forEach((elemento, index) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+            <td>${elemento.nombre}</td>
+            <td>${elemento.descripcion}</td>
+            <td>${elemento.numeroSerie}</td>
+            <td>${elemento.estado}</td>
+            <td>${elemento.prioridad}</td>
+            <td>
+                <button onclick="editar(${index})">Editar</button>
+                <button onclick="eliminar(${index})">X</button>
+            </td>
+        `;
+    tableBody.appendChild(row);
+  });
+};
 const editar = (filaIndex) => {
-    const elemento = elementos[filaIndex];
+  const elemento = elementos[filaIndex];
 
-    document.getElementById("nombre").value = elemento.nombre;
-    document.getElementById("descripcion").value = elemento.descripcion;
-    document.getElementById("numeroSerie").value = elemento.numeroSerie;
+  document.getElementById("nombre").value = elemento.nombre;
+  document.getElementById("descripcion").value = elemento.descripcion;
+  document.getElementById("numeroSerie").value = elemento.numeroSerie;
 
-    const estados = document.getElementsByName("estado");
-    estados.forEach(c => {
-        if (c.value === elemento.estado) {
-            c.checked = true;
-        }
-    });
+  const estados = document.getElementsByName("estado");
+  estados.forEach((c) => {
+    if (c.value === elemento.estado) {
+      c.checked = true;
+    }
+  });
 
-    const prioridads = document.getElementsByName("prioridad");
-    prioridads.forEach(c => {
-        if (c.value === elemento.prioridad) {
-            c.checked = true;
-        }
-    });
+  const prioridads = document.getElementsByName("prioridad");
+  prioridads.forEach((c) => {
+    if (c.value === elemento.prioridad) {
+      c.checked = true;
+    }
+  });
 
-    document.getElementById("formulario").style.display = "block";
-    document.getElementById("indexElemento").value = filaIndex;
+  document.getElementById("formulario").style.display = "block";
+  document.getElementById("indexElemento").value = filaIndex;
 
-    document.getElementById("edit").onsubmit = function(event) {
-        event.preventDefault();
-        guardar(filaIndex);
-    };
+  document.getElementById("edit").onsubmit = function (event) {
+    event.preventDefault();
+    guardar(filaIndex);
+  };
 
+  document.getElementById("cancelarBtn").onclick = cancelar;
 
-    document.getElementById("cancelarBtn").onclick = cancelar;
+  document.getElementById("nombre").value = elemento.nombre;
+  document.getElementById("descripcion").value = elemento.descripcion;
+  document.getElementById("numeroSerie").value = elemento.numeroSerie;
+
+  document.querySelector(
+    `input[name="estado"][value="${elemento.estado}"]`
+  ).checked = true;
+
+  document.querySelector(
+    `input[name="prioridad"][value="${elemento.prioridad}"]`
+  ).checked = true;
+
+  document.getElementById("formulario").style.display = "block";
+
+  document.getElementById("indexElemento").value = index;
 };
+const guardar = async (filaIndex) => {
+  const nombre = document.getElementById("nombre").value;
+  const descripcion = document.getElementById("descripcion").value;
+  const numeroSerie = document.getElementById("numeroSerie").value;
+  const estado = document.querySelector('input[name="estado"]:checked').value;
+  const prioridad = document.querySelector(
+    'input[name="prioridad"]:checked'
+  ).value;
 
-const guardar = (filaIndex) => {
-    const nombre = document.getElementById("nombre").value;
-    const descripcion = document.getElementById("descripcion").value;
-    const numeroSerie = document.getElementById("numeroSerie").value;
-    const estado = document.querySelector('input[name="estado"]:checked').value;
-    const prioridad = document.querySelector('input[name="prioridad"]:checked').value;
+  const confirmacion = await Swal.fire({
+    title: "¿Estás seguro?",
+    text: "¿Deseas guardar los cambios?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Sí, guardar",
+    cancelButtonText: "Cancelar",
+  });
 
-    elementos[filaIndex] = { nombre, descripcion, numeroSerie, estado, prioridad };
+  if (confirmacion.isConfirmed) {
+    try {
+      const response = await fetch(
+        "http://localhost/dwec-dwes/Trabajo/ws/modifyElement.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: elementos[filaIndex].id,
+            nombre,
+            descripcion,
+            numeroSerie,
+            estado,
+            prioridad,
+          }),
+        }
+      );
 
-    tabla(elementos);
+      const result = await response.json();
 
-    document.getElementById("formulario").style.display = "none";
+      if (result.success) {
+        Swal.fire("Guardado", "Elemento editado con éxito.", "success");
+        tabla(elementos);
+        document.getElementById("formulario").style.display = "none";
+      } else {
+        Swal.fire("Error", result.message || "No se pudo editar.", "error");
+      }
+    } catch {}
+  } else {
+    console.log("El usuario canceló la acción de guardar.");
+  }
 };
 
 const cancelar = () => {
-    document.getElementById("formulario").style.display = "none";
+  document.getElementById("formulario").style.display = "none";
+};
+
+const eliminar = async (index) => {
+  const confirmacion = await Swal.fire({
+    title: "¿Estás seguro?",
+    text: "¿Deseas eliminar este elemento?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí",
+    cancelButtonText: "Cancelar",
+  });
+
+  if (confirmacion.isConfirmed) {
+    try {
+      const response = await fetch(
+        "http://localhost/dwec-dwes/Trabajo/ws/deleteElement.php",
+        {
+          method: "POST",
+          body: JSON.stringify({ id: elementos[index].id }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.success) {
+        Swal.fire("Eliminado", "Elemento eliminado con éxito.", "success");
+
+        elementos.splice(index, 1);
+
+        tabla(elementos);
+      } else {
+        Swal.fire("Error", result.message || "No se pudo eliminar.", "error");
+      }
+    } catch (error) {}
+  } else {
+    console.log("El usuario canceló la acción de eliminar.");
+  }
 };

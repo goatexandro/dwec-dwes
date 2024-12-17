@@ -1,5 +1,5 @@
 <?php
-require_once './basedatos/Base_datos.php';
+require_once './basedatos/Configuration.php';
 
 $response = (new Configuration())->createElement(
     $_POST['nombre'], 
