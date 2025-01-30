@@ -1,0 +1,31 @@
+<form (ngSubmit)="enviarPlanta()">
+  <label for="nombre">Nombre:</label>
+  <input id="nombre" [(ngModel)]="nombre" name="nombre" required />
+  
+  <label for="tipo">Tipo:</label>
+  <div>
+    <label>
+      <input
+        type="radio"
+        name="tipo"
+        value="Arbusto"
+        [(ngModel)]="tipo"
+        [checked]="tipo === 'Arbusto'"
+      />
+      Arbusto
+    </label>
+    <label>
+      <input
+        type="radio"
+        name="tipo"
+        value="Árbol"
+        [(ngModel)]="tipo"
+        [checked]="tipo === 'Árbol'"
+      />
+      Árbol
+    </label>
+  </div>
+
+  <button type="submit" [disabled]="!nombre || !tipo">Guardar</button>
+  <button type="button" (click)="borrarFormulario()">Borrar</button>
+</form>

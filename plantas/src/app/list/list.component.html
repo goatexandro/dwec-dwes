@@ -1,0 +1,12 @@
+<div *ngIf="plantas.length > 0">
+  <ul>
+    <li *ngFor="let planta of plantas; let i = index">
+      {{ planta.nombre }} ({{ planta.tipo }})
+      <button (click)="toggleFavorito(planta)">
+        <span [ngClass]="{'favorito': planta.favorito}">&#9733;</span> 
+      </button>
+      <button (click)="eliminarPlanta(i)">Eliminar</button>
+    </li>
+  </ul>
+</div>
+

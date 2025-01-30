@@ -1,0 +1,61 @@
+.favorito {
+    color: rgb(166, 166, 0); /* Estrella en color amarillo cuando es favorita */
+    font-size: 20px;
+  }
+  
+   button{
+    background-color: white;
+    border-top: white;
+    border-bottom: white;
+    border-right: white;
+    border-left: white;
+
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+    max-width: 600px;
+    margin: 20px auto;
+  }
+  
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e9f5f1;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    transition: background-color 0.3s;
+  }
+  
+  li:hover {
+    background-color: #d1e8e0;
+  }
+  
+  button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    background-color: #0a7800;
+    border-radius: 5px;
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #8ada72;
+  }
+  
+  button[disabled] {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+  }
+  
+  .favorito {
+    color: gold;
+    font-size: 1.5rem;
+  }

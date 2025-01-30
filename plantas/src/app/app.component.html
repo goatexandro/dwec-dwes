@@ -1,0 +1,8 @@
+<div class="container">
+  <app-form (nuevaPlanta)="agregarPlanta($event)"></app-form>
+  <app-list
+    [plantas]="plantas"
+    (eliminar)="eliminarPlanta($event)"
+    (favorito)="toggleFavorito($event)"
+  ></app-list>
+</div>

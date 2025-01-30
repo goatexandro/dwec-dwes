@@ -1,0 +1,77 @@
+form {
+    background-color: #f3f7f4;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #3a5a40;
+    margin-bottom: 5px;
+  }
+  
+  input {
+    padding: 8px;
+    border: 2px solid #a8d5ba;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: #3a5a40;
+    background-color: #e9f5f1;
+    transition: 0.3s;
+    &:focus {
+      outline: none;
+      border-color: #4b8a65;
+      background-color: #fff;
+    }
+  }
+  
+  button {
+    padding: 10px;
+    background-color: #4b8a65;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    &:hover {
+      background-color: #3a6d50;
+    }
+  }
+  
+  button[type="button"] {
+    background-color: #e4e4e4;
+    color: #3a5a40;
+    &:hover {
+      background-color: #d1d1d1;
+    }
+  }
+  
+  // Estilo para los radios
+  div {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    color: #3a5a40;
+    gap: 5px;
+  }
+  
+  input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }

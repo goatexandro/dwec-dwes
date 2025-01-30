@@ -1,0 +1,23 @@
+PARA CREAR EL PROYECTO
+
+ng new plantas
+
+
+PARA CREAR EL COMPONENTE DONDE SE LISTAN LAS PLANTAS
+
+ng generate component list
+
+
+PARA CREAR EL COMPONENTE DEL FORMULARIO PARA LAS PLANTAS
+
+ng generate component form
+
+
+PARA BORRAR CACHE DE ANGULAR (OPCIONAL)
+
+ng cache clean
+
+
+PARA INICIALIZAR EL PROYECTO 
+
+ng serve
